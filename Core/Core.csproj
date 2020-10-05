@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Specifications\ProductsWithTypesAndBrandsSpecification.cs~RF2a531a2.TMP" />
+  </ItemGroup>
+
 </Project>
