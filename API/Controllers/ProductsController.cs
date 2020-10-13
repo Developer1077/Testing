@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -31,9 +32,22 @@ namespace API.Controllers
             _mappar = mappar;
         }
         [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts() {
-            var spec = new ProductsWithTypesAndBrandsSpecification();
+        public async Task<ActionResult<IReadOnlyList<Pagination<ProductToReturnDto>>>> GetProducts([FromQuery] ProductSpecParams productParams) {
+            var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
             var products = await _productRepo.ListAsync(spec);
+
+            var countSpec = new ProductsWithFiltersForCountSpecification(productParams);
+
+            var totalItems = await _productRepo.CountAsync(countSpec);
+            var data = _mappar.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
+            var pagination = new Pagination<ProductToReturnDto>
+            {
+
+                PageIndex = productParams.PageIndex,
+                PageSize = productParams.PageSize,
+                Count = totalItems,
+                Data = data
+            };
             //return products.Select(product => new ProductToReturnDto 
             // {
             //     Id = product.Id,
@@ -44,7 +58,7 @@ namespace API.Controllers
             //     ProductBrand = product.ProductBrand.Name,
             //     ProductType = product.ProductType.Name
             // }).ToList();
-            return Ok(_mappar.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products));
+            return Ok(pagination);
         }
         
         [HttpGet("{id}")]
