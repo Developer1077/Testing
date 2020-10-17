@@ -16,16 +16,19 @@ namespace API
 
             var host = CreateHostBuilder(args).Build();
             //This is for creating the database from a pending migration when the application started
-            using (var scope = host.Services.CreateScope()) {
+            using (var scope = host.Services.CreateScope())
+            {
                 var services = scope.ServiceProvider;
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-                try {
+                try
+                {
                     var context = services.GetRequiredService<StoreContext>();
                     await context.Database.MigrateAsync();
                     //Now seed the data
                     await StoreContextSeed.SeedAsync(context, loggerFactory);
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     var logger = loggerFactory.CreateLogger<Program>();
                     logger.LogError(ex, "An error occured during migration");
                 }

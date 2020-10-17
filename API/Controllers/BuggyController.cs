@@ -1,15 +1,10 @@
 ﻿using API.Errors;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    public class BuggyController: BaseApiController
+    public class BuggyController : BaseApiController
     {
         private readonly StoreContext _context;
 
@@ -19,7 +14,8 @@ namespace API.Controllers
         }
 
         [HttpGet("notfound")]
-        public ActionResult GetNotFoundRequest() {
+        public ActionResult GetNotFoundRequest()
+        {
             var thing = _context.Products.Find(0);
             if (thing == null)
             {

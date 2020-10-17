@@ -2,14 +2,13 @@
 using Core.Interfaces;
 using Core.Specifications;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T:BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly StoreContext _context;
 
@@ -38,7 +37,8 @@ namespace Infrastructure.Data
             return await ApplySpecification(spec).ToListAsync();
         }
 
-        private IQueryable<T> ApplySpecification(IBaseSpecification<T> spec) {
+        private IQueryable<T> ApplySpecification(IBaseSpecification<T> spec)
+        {
 
             return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spec);
 

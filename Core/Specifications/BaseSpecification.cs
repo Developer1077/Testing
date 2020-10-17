@@ -1,10 +1,6 @@
-﻿using Core.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.Specifications
 {
@@ -29,10 +25,11 @@ namespace Core.Specifications
 
         public int Take { get; private set; }
 
-         public int Skip { get; private set; }
+        public int Skip { get; private set; }
         public bool IsPagingEnabled { get; private set; }
 
-        protected void AddInclude(Expression<Func<T, object>> includeExpression) {
+        protected void AddInclude(Expression<Func<T, object>> includeExpression)
+        {
             Includes.Add(includeExpression);
 
         }

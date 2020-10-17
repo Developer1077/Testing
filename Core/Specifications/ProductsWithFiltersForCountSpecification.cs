@@ -11,7 +11,7 @@ namespace Core.Specifications
             (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)//if the condition is true, do what is there after the ||
         )
         {
-            
+
         }
 
     }

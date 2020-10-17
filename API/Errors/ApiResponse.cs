@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace API.Errors
+﻿namespace API.Errors
 {
     public class ApiResponse
     {
-        public ApiResponse( int statusCode, string message = null)
+        public ApiResponse(int statusCode, string message = null)
         {
             StatusCode = statusCode;
             Message = message ?? GetDefaultMessageForStatusCode(statusCode);
@@ -26,7 +20,7 @@ namespace API.Errors
                 401 => "You're not authorized",
                 404 => "Resource is not found",
                 500 => "Server Error",
-                 _ => null
+                _ => null
             };
 
         }

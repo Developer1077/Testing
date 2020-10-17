@@ -3,18 +3,15 @@ using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Extensions
 {
     public static class ApplicationServicesExtensions
     {
 
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services) {
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
 
             services.AddScoped<IProductRepository, ProductRepository>();
 
@@ -23,7 +20,8 @@ namespace API.Extensions
             //must be after services.AddControllers();
             services.Configure<ApiBehaviorOptions>(options =>
             {
-                options.InvalidModelStateResponseFactory = ActionContext => {
+                options.InvalidModelStateResponseFactory = ActionContext =>
+                {
                     var errors = ActionContext.ModelState
                     .Where(e => e.Value.Errors.Count > 0)
                     .SelectMany(x => x.Value.Errors)
