@@ -1,4 +1,4 @@
-﻿@model Pagination
+﻿
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -6,11 +6,4 @@
 <div>
     <h3>Welcome to Skinet</h3>
 
-    count = @Model.Count<br />
-
-    @foreach (var item in Model.Data)
-    {
-        @item.Name
-        <br />
-    }
 </div>

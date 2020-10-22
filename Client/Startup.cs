@@ -1,3 +1,4 @@
+using Client.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,8 @@ namespace Client
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddScoped<IShopService, ShopService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,150 @@
+﻿@model PaginationWithBrandsAndTypesViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    var aspRoutBrandId = (Model.BrandIdSelected > 0) ? Model.BrandIdSelected : 0;
+    var aspRoutTypeId = (Model.TypeIdSelected > 0) ? Model.TypeIdSelected : 0;
+    var aspRoutSort = (!String.IsNullOrEmpty(Model.SortSelected)) ? Model.SortSelected : "name";
+    var aspRoutSearch = (!String.IsNullOrEmpty(Model.SearchSelected)) ? Model.SearchSelected : "";
+
+}
+<form method="post" asp-action="Index"
+      asp-route-typeId="@aspRoutTypeId"
+      asp-route-brandId="@aspRoutBrandId"
+      asp-route-search="@aspRoutSearch"
+      asp-route-sort="@aspRoutSort">
+    <div class="container">
+        <div class="row">
+            <section class="col-3">
+                <h5 class="text-warning ml-3">Sort</h5>
+
+                <!--Here I'm passing the value of the sort through the model-->
+                <!--when posting the form, only the sortSelected will have a value..all other properties of the model will be empty -->
+                <select class="custom-select mb-3"
+                        onchange="this.form.submit();"
+                        autopostback="true"
+                        asp-for="SortSelected"
+                        asp-items="@(new SelectList(Model.SortOptions, "Value", "Text"))">
+                </select>
+
+
+                @ViewBag.Sort
+                @ViewData["Sort"]
+
+
+                <h5 class="text-warning ml-3">Brands</h5>
+                <div class="list-group my-3">
+                    <a asp-route-brandid="0"
+                       asp-action="Index"
+                       asp-route-typeid="@aspRoutTypeId"
+                       asp-route-sort="@aspRoutSort"
+                       asp-route-search="@aspRoutSearch"
+                       class="list-group-item list-group-item-action @(Model.BrandIdSelected == 0 ? "active" : "")">
+                        All
+                    </a>
+                    @foreach (var brand in Model.Brands)
+                    {
+                        <a asp-route-brandid="@brand.Id"
+                           asp-action="Index"
+                           asp-route-sort="@aspRoutSort"
+                           asp-route-search="@aspRoutSearch"
+                           asp-route-typeid="@aspRoutTypeId"
+                           class="list-group-item list-group-item-action @(Model.BrandIdSelected == brand.Id ? "active" : "")">
+                            @brand.Name
+                        </a>
+                    }
+                </div>
+                <h5 class="text-warning ml-3">Types</h5>
+                <div class="list-group">
+                    <a asp-route-typeid="0"
+                       asp-action="Index"
+                       asp-route-sort="@aspRoutSort"
+                       asp-route-brandid="@aspRoutBrandId"
+                       asp-route-search="@aspRoutSearch"
+                       class="list-group-item list-group-item-action @(Model.TypeIdSelected == 0 ? "active" : "")">
+                        All
+                    </a>
+
+                    @foreach (var type in Model.Types)
+                    {
+                        <a asp-action="Index"
+                           class="list-group-item list-group-item-action @(Model.TypeIdSelected == type.Id ? "active" : "")"
+                           asp-route-brandid="@aspRoutBrandId"
+                           asp-route-sort="@aspRoutSort"
+                           asp-route-search="@aspRoutSearch"
+                           asp-route-typeid="@type.Id">
+                            @type.Name
+                        </a>
+                    }
+
+
+                </div>
+
+            </section>
+            <section class="col-9">
+                <div class="d-flex justify-content-between align-center pb-2">
+                    <div class="form-inline mt-1">
+
+                        <partial name="_PagingHeader" model="new PagingHeaderViewModel {
+                            Count = Model.Pagination.Count,
+                            PageSize = Model.Pagination.PageSize,
+                            PageIndex = Model.Pagination.PageIndex }" />
+                    </div>
+                    <div class="form-inline mt-1">
+                        <input id="txtSearch" class="form-control mr-2" style="width:300px;" asp-for="@Model.SearchSelected" placeholder="Search" type="text" />
+                        <button type="submit" class="btn btn-outline-primary my-2 mr-2">Search</button>
+                        <button class="btn btn-outline-success my-2" onclick="document.getElementById('txtSearch').value = '';">Reset</button>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var product in Model.Pagination.Data)
+                    {
+                        <div class="col-4">
+                            <partial name="_ProductItem" model="product" />
+                        </div>
+                    }
+                </div>
+                @{
+                    //var queryParams = new Dictionary<string, string>();
+                    //if (aspRoutBrandId != 0)
+                    //{
+                    //    queryParams.Add("brandId", aspRoutBrandId.ToString());
+                    //}
+
+                    //if (aspRoutTypeId != 0)
+                    //{
+                    //    queryParams.Add("typeId", aspRoutTypeId.ToString());
+                    //}
+
+                    //if (!String.IsNullOrEmpty(aspRoutSort))
+                    //{
+                    //    queryParams.Add("sort", aspRoutSort);
+                    //}
+
+
+                }
+                <partial name="_Pager" model="new PagerViewModel() {
+                PageSize = Model.Pagination.PageSize,
+                PageIndex = Model.Pagination.PageIndex,
+                Count = Model.Pagination.Count,
+                //QueryParams = queryParams.ToString()
+                BrandIdSelected = aspRoutBrandId,
+                TypeIdSelected = aspRoutTypeId,
+                SortSelected = aspRoutSort,
+                SearchSelected = aspRoutSearch
+                };" />
+
+                @*@await Html.PartialAsync("../Shared/_ProductItem", product)*@
+
+            </section>
+
+        </div>
+
+    </div>
+</form>
+@section scripts {
+    <script type="text/javascript">
+
+
+    </script>
+}
+

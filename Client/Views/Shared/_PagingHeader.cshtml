@@ -1,0 +1,24 @@
+﻿@model PagingHeaderViewModel
+@{
+    var start = 0;
+    var end = 0;
+}
+@if (Model.Count <= 0)
+{
+    <span>There are 0 results for this filter</span>
+}
+else
+{
+    start = (Model.PageIndex - 1) * Model.PageSize + 1;
+    end = Model.PageIndex * Model.PageSize;
+    if (end > Model.Count)
+        end = Model.Count;
+}
+@if (Model.Count > 0)
+{
+    <span>
+        Showing <strong>
+            @start  - @end
+        </strong> of <strong>@Model.Count</strong> results
+    </span>
+}

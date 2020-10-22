@@ -1,0 +1,15 @@
+﻿@model Product
+<div class="card h-100 shadow-sm">
+    <img src="@Model.PictureUrl" alt="@Model.Name" class="img-fluid bg-info" />
+    <div class="card-body d-flex flex-column">
+        <a href="#">
+            <h6 class="text-uppercase"><a asp-action="ProductDetails" asp-route-id="@Model.Id" asp-controller="Shop">@Model.Name</a></h6>
+        </a>
+        <span class="mb-2">$@Model.Price.ToString("0.00")</span>
+        <span class="mb-2">@Model.ProductBrand | @Model.ProductType</span>
+        <div class="btn-group mt-auto" style="width:100%">
+            <button type="button" class="btn btn-sm btn-outline-secondary fa fa-shopping-cart fa-2x mr-2"  style="width:50%"></button>
+            <a type="button" class="btn btn-sm btn-outline-secondary"  style="width:50%" asp-route-id="@Model.Id" asp-action="ProductDetails" asp-controller="Shop">View</a>
+        </div>
+    </div>
+</div>

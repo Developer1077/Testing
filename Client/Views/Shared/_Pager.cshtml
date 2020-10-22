@@ -1,0 +1,23 @@
+﻿@model PagerViewModel
+
+@if (Model.Count > Model.PageSize)
+{
+   
+    var pages = 0;
+    if (Model.Count % Model.PageSize == 0)
+    {
+        pages = Model.Count / Model.PageSize;
+    }
+    else {
+        pages = Model.Count / Model.PageSize + 1;
+    }
+    <ul class="pagination justify-content-center  py-5">
+        @for (int i = 1; i <= pages ; i++)
+        {
+            <li class="@(i == Model.PageIndex ? "page-item active" : "page-item")">
+                <a class="page-link" href="@Url.Action("Index", new {brandId=Model.BrandIdSelected, typeId=Model.TypeIdSelected,sort=Model.SortSelected,search=Model.SearchSelected, pageindex = i, pagesize = Model.PageSize })">@i</a>
+                
+            </li>
+        }
+    </ul>
+}
