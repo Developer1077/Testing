@@ -33,13 +33,31 @@ namespace Client.Controllers
         [HttpPost]
         public IActionResult Index(PaginationWithBrandsAndTypesViewModel model, int? brandId, int? typeId)
         {
+            //no need to these two lines
             ViewBag.Sort = "PostSort = " + model.SortSelected;
             ViewData["Sort"] = "PostSort = " + model.SortSelected;
 
 
-            return RedirectToAction("Index", new { brandId = brandId ?? 0, typeId = typeId ?? 0, sort = model.SortSelected, search=model.SearchSelected });
+            ShopParams shopParams = new ShopParams() {
+                BrandId = brandId ?? 0,
+                TypeId = typeId ?? 0,
+                Sort = model.SortSelected,
+                Search = model.SearchSelected
+            };
+
+            
+            return RedirectToAction("Index", shopParams);
         }
 
+        public IActionResult ProductDetails(int id) {
+            Product product = _shopService.GetProduct(id);
+            if (String.IsNullOrEmpty(product.Name))
+            {
+               return NotFound();
+            }
 
+            return View(product);
+            //return View(null);
+        }
     }
 }

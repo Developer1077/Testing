@@ -10,6 +10,8 @@ namespace Client.Services
     public interface IShopService
     {
         Pagination GetProducts(ShopParams shopParams);
+        Product GetProduct(int id);
+
         IReadOnlyList<ProductType> GetProductTypes();
         IReadOnlyList<ProductBrand> GetProductBrands();
     }

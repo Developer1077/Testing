@@ -10,3 +10,30 @@
     top: -12px;
     right: 32px;
 }
+
+
+a {
+    text-decoration: none;
+    color: #343a40;
+ 
+
+}
+
+.logo {
+    cursor: pointer;
+    outline: none;
+}
+
+
+.navbar {
+    border: none;
+}
+
+
+.navbar.navbar-brand, .navbar .navbar-header a, .navbar-nav > li > a {
+        color: #343a40 !important;
+    }
+
+.navbar .dropdown-toggle, .navbar-nav > li > a {
+    color: orange !important;
+}

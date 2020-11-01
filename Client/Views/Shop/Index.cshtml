@@ -1,18 +1,26 @@
 ﻿@model PaginationWithBrandsAndTypesViewModel
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Shop";
+    ViewData["BreadCrumbs"] = new List<BreadCrumb>() {
+        new BreadCrumb() { Title = "Home", IsActive = false, Link ="/Home/" },
+        new BreadCrumb() { Title = "Shop", IsActive = true, Link="" }
+    };
+
     var aspRoutBrandId = (Model.BrandIdSelected > 0) ? Model.BrandIdSelected : 0;
     var aspRoutTypeId = (Model.TypeIdSelected > 0) ? Model.TypeIdSelected : 0;
     var aspRoutSort = (!String.IsNullOrEmpty(Model.SortSelected)) ? Model.SortSelected : "name";
     var aspRoutSearch = (!String.IsNullOrEmpty(Model.SearchSelected)) ? Model.SearchSelected : "";
 
 }
+
 <form method="post" asp-action="Index"
       asp-route-typeId="@aspRoutTypeId"
       asp-route-brandId="@aspRoutBrandId"
       asp-route-search="@aspRoutSearch"
       asp-route-sort="@aspRoutSort">
     <div class="container">
+        
         <div class="row">
             <section class="col-3">
                 <h5 class="text-warning ml-3">Sort</h5>

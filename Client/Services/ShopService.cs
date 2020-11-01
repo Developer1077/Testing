@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +15,12 @@ namespace Client.Services
     public class ShopService : IShopService
     {
         private readonly string _apiUrl;
-        
-        public ShopService(IConfiguration config)
+        private readonly ILogger _logger;
+
+        public ShopService(IConfiguration config, ILogger<ShopService> logger)
         {
             _apiUrl = config["ApiUrl"];
+            _logger = logger;
         }
 
         public Pagination GetProducts(ShopParams shopParams)
@@ -130,8 +133,83 @@ namespace Client.Services
 
                     types = readTask.Result;
                 }
+                
             }
             return types;
         }
+
+        public Product GetProduct(int id)
+        {
+
+            Product product = new Product();
+            //Product product;
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(_apiUrl);
+
+                var response = client.GetAsync($"products/{id}");
+                response.Wait();
+
+                var result = response.Result;
+
+                if (result.IsSuccessStatusCode)
+                {
+                    //Install-Package Microsoft.AspNet.WebApi.Client 
+
+                    var readTask = result.Content.ReadAsAsync<Product>();
+                    readTask.Wait();
+
+                    product = readTask.Result;
+                }
+                else
+                {
+                    _logger.LogInformation(result.ToString());
+
+                    //var readTask = result.Content.ReadAsAsync<ResponseError>();
+                    //readTask.Wait();
+
+                }
+            }
+            return product;
+        }
+
+        
+
+        //public void GetProduct(int id, Action<Product> onSuccess, Action<ResponseError> onError)
+        //{
+
+        //    using (var client = new HttpClient())
+        //    {
+        //        client.BaseAddress = new Uri(_apiUrl);
+
+        //        var response = client.GetAsync($"products/{id}");
+        //        response.Wait();
+
+        //        var result = response.Result;
+
+        //        if (result.IsSuccessStatusCode)
+        //        {
+        //            //Install-Package Microsoft.AspNet.WebApi.Client 
+
+        //            var readTask = result.Content.ReadAsAsync<Product>();
+        //            readTask.Wait();
+
+        //            Product product = readTask.Result;
+        //            onSuccess(product);
+
+        //        }
+        //        else
+        //        {
+        //            _logger.LogInformation(result.ToString());
+
+        //            var readTask = result.Content.ReadAsAsync<ResponseError>();
+        //            readTask.Wait();
+        //            ResponseError responseError = readTask.Result;
+        //            onError(responseError);
+        //        }
+        //    }
+
+        //}
     }
 }

@@ -15,6 +15,8 @@ namespace API.Extensions
 
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddScoped<IBasketRepository, BasketRepository>();
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             //must be after services.AddControllers();

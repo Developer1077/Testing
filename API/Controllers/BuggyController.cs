@@ -1,5 +1,6 @@
 ﻿using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,6 +15,7 @@ namespace API.Controllers
         }
 
         [HttpGet("notfound")]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public ActionResult GetNotFoundRequest()
         {
             var thing = _context.Products.Find(0);

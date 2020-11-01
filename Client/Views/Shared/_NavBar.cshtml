@@ -1,0 +1,32 @@
+﻿<header>
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
+        <img src="/images/logo.png" style="max-height: 70px;" alt="logo">
+        <nav class="navbar navbar-expand-lg navbar-light my-2 my-md-0 mr-md-3 text-uppercase" style="font-size: larger;">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item ">
+                        <a class="nav-link p-2" asp-controller="home" asp-action="index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-2" asp-controller="shop" asp-action="index">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-2" asp-controller="testerror" asp-action="index">Errors</a>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+        <div class="d-flix align-items-center">
+            <a class="position-relative">
+                <i class="fa fa-shopping-cart fa-2x mr-5 text-dark"></i>
+                <div class="cart-no">5</div>
+            </a>
+            <a class="btn btn-outline-secondary mr-2">Login</a>
+            <a class="btn btn-outline-secondary mr-3">Sign up</a>
+        </div>
+    </div>
+</header>

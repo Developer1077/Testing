@@ -29,9 +29,11 @@ namespace API.Controllers
             _productBrandRepo = productBrandRepo;
             _mappar = mappar;
         }
+
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IReadOnlyList<Pagination<ProductToReturnDto>>>> GetProducts([FromQuery] ProductSpecParams productParams)
-        {
+        { 
             var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
             var products = await _productRepo.ListAsync(spec);
 
@@ -63,6 +65,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var spec = new ProductsWithTypesAndBrandsSpecification(id);
@@ -70,6 +73,10 @@ namespace API.Controllers
             var product = await _productRepo.GetEntityWithSpecAsync(spec);
             if (product == null)
                 return NotFound(new ApiResponse(StatusCodes.Status404NotFound));
+
+            //checking the model state of the product we're returning
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             //return new ProductToReturnDto {
             //    Id = product.Id,
@@ -81,7 +88,6 @@ namespace API.Controllers
             //    ProductType = product.ProductType.Name           
             //} ;
             return _mappar.Map<Product, ProductToReturnDto>(product);
-
         }
 
         [HttpGet("brands")]
@@ -97,6 +103,5 @@ namespace API.Controllers
             var types = await _productTypeRepo.ListAllAsync();
             return Ok(types);
         }
-
     }
 }
