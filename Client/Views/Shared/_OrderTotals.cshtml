@@ -1,0 +1,25 @@
+﻿@inject BasketService _basketService
+@{
+    BasketTotals totals = _basketService.CalculateTotals();
+}
+<div class="bg-light px-4 py-3 text-uppercase font-weight-bold">
+    Order Summary
+</div>
+<div class="p-4">
+    <p class="font-italic mb-4"> Shipping costs willl be added depending on choices made during checkout</p>
+    <ul class="list-unstyled mb-4">
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Order subtotals</strong>
+            <strong>$@String.Format("{0:0.00}", totals.SubTotal)</strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Shipping ans handling</strong>
+            <strong>$@String.Format("{0:0.00}", totals.Shipping)</strong>
+        </li>
+
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Total</strong>
+            <strong>$@String.Format("{0:0.00}", totals.Total)</strong>
+        </li>
+    </ul>
+</div>

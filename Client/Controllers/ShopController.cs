@@ -49,15 +49,31 @@ namespace Client.Controllers
             return RedirectToAction("Index", shopParams);
         }
 
-        public IActionResult ProductDetails(int id) {
+        public IActionResult ProductDetails(int id, int quantity=1) {
             Product product = _shopService.GetProduct(id);
             if (String.IsNullOrEmpty(product.Name))
             {
                return NotFound();
             }
+            ProductQuantityViewModel model = new ProductQuantityViewModel()
+            {
+                Product = product,
+                Quantity = quantity
+            };
 
-            return View(product);
-            //return View(null);
+            return View(model);
+        }
+        public IActionResult IncrementQuantity(int id, int quantity)
+        {
+            return RedirectToAction("ProductDetails", new { id = id.ToString(), quantity = (quantity+1).ToString() });
+        }
+
+        public IActionResult DecrementQuantity(int id, int quantity)
+        {
+            return RedirectToAction("ProductDetails", new { 
+                    id = id.ToString(), 
+                    quantity = (quantity > 1) ? (quantity - 1).ToString() : "1"
+            });
         }
     }
 }

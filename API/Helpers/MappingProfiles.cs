@@ -1,6 +1,7 @@
 ﻿using API.Dtos;
 using AutoMapper;
 using Core.Entities;
+using Core.Entities.Identity;
 
 namespace API.Helpers
 {
@@ -21,6 +22,11 @@ namespace API.Helpers
                     dest => dest.PictureUrl,
                     options => options.MapFrom<ProductUrlResolver>()
                 );
+
+            CreateMap<Address, AddressDto>().ReverseMap();
+            CreateMap<CustomerBasketDto, CustomerBasket>();
+            CreateMap<BasketItemDto, BasketItem>();
+
 
         }
 

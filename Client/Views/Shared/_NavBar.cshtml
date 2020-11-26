@@ -1,4 +1,5 @@
-﻿<header>
+﻿@inject BasketService _basketService
+<header>
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top">
         <img src="/images/logo.png" style="max-height: 70px;" alt="logo">
         <nav class="navbar navbar-expand-lg navbar-light my-2 my-md-0 mr-md-3 text-uppercase" style="font-size: larger;">
@@ -21,9 +22,24 @@
             </div>
         </nav>
         <div class="d-flix align-items-center">
-            <a class="position-relative">
+            <a class="position-relative" asp-controller="basket" asp-action="index">
                 <i class="fa fa-shopping-cart fa-2x mr-5 text-dark"></i>
-                <div class="cart-no">5</div>
+                <div class="cart-no">
+                    @{ 
+                        var itemCount = 0;
+                        Basket basket = _basketService.GetCurrentBasketValue();
+                        if (basket != null) {
+                            List<BasketItem> items = basket.Items;
+                            if (items.Count > 0)
+                            {
+                                foreach (var item in items) {
+                                    itemCount += item.Quantity;
+                                }
+                            }
+                        }
+                     }
+                    @itemCount
+                </div>
             </a>
             <a class="btn btn-outline-secondary mr-2">Login</a>
             <a class="btn btn-outline-secondary mr-3">Sign up</a>

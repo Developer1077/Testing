@@ -1,5 +1,6 @@
 ﻿using API.Errors;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,13 @@ namespace API.Controllers
         {
             _context = context;
         }
-
-        [HttpGet("notfound")]
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret stuff";
+        }
+            [HttpGet("notfound")]
         [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public ActionResult GetNotFoundRequest()
         {

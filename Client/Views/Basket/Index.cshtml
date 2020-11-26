@@ -1,0 +1,96 @@
+﻿@model Basket
+@{
+    ViewData["Title"] = "Basket";
+    ViewData["BreadCrumbs"] = new List<BreadCrumb>() {
+        new BreadCrumb() { Title = "Home", IsActive = false, Link ="/Home/" },
+        new BreadCrumb() { Title = "Basket", IsActive = true, Link="" }
+    };
+}
+<div class="container">
+    @if (Model != null)
+    {
+        if (Model.Items != null)
+        {
+            <div class="pb-2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 py-5 mb-1">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 bg-light" scope="col">
+                                                <div class="p-2 px-3 text-uppercase">Product</div>
+                                            </th>
+                                            <th class="border-0 bg-light" scope="col">
+                                                <div class="p-2 px-3 text-uppercase">Price</div>
+                                            </th>
+                                            <th class="border-0 bg-light" scope="col">
+                                                <div class="p-2 px-3 text-uppercase">Quantity</div>
+                                            </th>
+                                            <th class="border-0 bg-light" scope="col">
+                                                <div class="p-2 px-3 text-uppercase">Total</div>
+                                            </th>
+                                            <th class="border-0 bg-light" scope="col">
+                                                <div class="p-2 px-3 text-uppercase">Remove</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <tr>
+
+                                                <th scope="row">
+                                                    <div class="p-2">
+                                                        <img src="@item.PictureUrl" alt="@item.ProductName" class="img-fluid" style="max-height:50px;" />
+                                                        <div class="ml-3 d-inline-block align-middle">
+                                                            <h5 class="mb-0">
+                                                                <a asp-controller="shop" asp-action="productdetails" asp-route-id="@item.Id" class="text-dark">@item.ProductName</a>
+                                                            </h5>
+                                                            <span class="text-muted font-weight-normal font-italic d-block">Type: @item.Type</span>
+                                                        </div>
+                                                    </div>
+                                                </th>
+                                                <td class="align-middle"><strong>@item.Price</strong></td>
+                                                <td class="align-middle">
+                                                    <div class="d-flex align-items-center">
+                                                        <a asp-controller="basket" asp-action="DecrementItemQuantity" asp-route-id="@item.Id"><i class="fa fa-minus-circle text-warning mr-2" style="cursor:pointer; font-size:2em;"></i></a>
+                                                        <span class="font-weight-bold" style="font-size: 1.5em;">@item.Quantity</span>
+                                                        <a asp-controller="basket" asp-action="IncrementItemQuantity" asp-route-id="@item.Id"><i class="fa fa-plus-circle text-warning mx-2" style="cursor:pointer; font-size:2em;"></i></a>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle"><strong>$@String.Format("{0:0.00}", item.Price * item.Quantity)</strong></td>
+                                                <td class="align-middle text-center">
+                                                    <a class="text-danger" asp-controller="basket" asp-action="RemoveItemFromBasket" asp-route-id="@item.Id">
+                                                        <i class="fa fa-trash" style="font-size: 2em;"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 offset-6">
+                    <partial name="_OrderTotals" />
+                    <a class="btn btn-outline-primary py-2 btn-block" asp-controller="checkout" asp-action="index">
+                        Proceed to checkout
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div>
+            <p>There is no items in your basket</p>
+        </div>
+    }
+</div>

@@ -1,10 +1,15 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Client.Helpers;
 using Client.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Client
 {
@@ -22,12 +27,28 @@ namespace Client
         {
             services.AddControllersWithViews();
             services.AddScoped<IShopService, ShopService>();
+            services.AddScoped<IBasketService, BasketService>();
+            //this one for the views
+            services.AddScoped<BasketService>();
+
+
+            object p = services.AddAutoMapper(typeof(MappingProfiles));
 
             //Needed for the delay filter
-            services.AddMvc(options =>
+            //services.AddMvc(options =>
+            //{
+            //    options.Filters.Add(typeof(DelayFilter));
+            //});
+
+            services.AddSession(options =>
             {
-                options.Filters.Add(typeof(DelayFilter));
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
             });
+
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +71,8 @@ namespace Client
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+            
             app.UseRouting();
 
             app.UseAuthorization();
